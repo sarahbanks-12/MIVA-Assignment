@@ -1,0 +1,36 @@
+erDiagram
+    CUSTOMERS o|--o{ ACCOUNTS : owns
+    ACCOUNTS ||--o{ TRANSFERS : source
+    ACCOUNTS ||--o{ TRANSFERS : destination
+    TRANSFERS ||--|{ LEDGER_ENTRIES : "has exactly two"
+    ACCOUNTS ||--o{ LEDGER_ENTRIES : receives
+    TRANSFERS o|--o| TRANSFERS : "reverses original"
+    CUSTOMERS {
+        bigint customer_id PK
+        text full_name
+        text email UK
+        timestamptz created_at
+    }
+    ACCOUNTS {
+        bigint account_id PK
+        bigint customer_id FK "null for clearing"
+        char10 account_number UK
+        text account_kind
+        char3 currency
+        bigint balance_kobo
+    }
+    TRANSFERS {
+        bigint transfer_id PK
+        text request_key UK
+        bigint source_account FK
+        bigint destination_account FK
+        bigint amount_kobo
+        text kind
+        bigint reversal_of FK,UK
+        timestamptz created_at
+    }
+    LEDGER_ENTRIES {
+        bigint transfer_id PK,FK
+        bigint account_id PK,FK
+        bigint delta_kobo
+    }

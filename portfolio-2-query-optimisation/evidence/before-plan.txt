@@ -1,0 +1,17 @@
+Limit  (cost=4744.15..4746.45 rows=20 width=32) (actual time=3.900..4.610 rows=20 loops=1)
+  Buffers: shared hit=2317
+  ->  Gather Merge  (cost=4744.15..4746.91 rows=24 width=32) (actual time=3.899..4.609 rows=20 loops=1)
+        Workers Planned: 1
+        Workers Launched: 1
+        Buffers: shared hit=2317
+        ->  Sort  (cost=3744.14..3744.20 rows=24 width=32) (actual time=3.155..3.155 rows=12 loops=2)
+              Sort Key: created_at DESC, transfer_id DESC
+              Sort Method: quicksort  Memory: 27kB
+              Buffers: shared hit=2317
+              Worker 0:  Sort Method: quicksort  Memory: 25kB
+              ->  Parallel Seq Scan on transfers  (cost=0.00..3743.59 rows=24 width=32) (actual time=0.311..3.141 rows=20 loops=2)
+                    Filter: (destination_account = 42)
+                    Rows Removed by Filter: 99980
+                    Buffers: shared hit=2273
+Planning Time: 0.017 ms
+Execution Time: 4.614 ms

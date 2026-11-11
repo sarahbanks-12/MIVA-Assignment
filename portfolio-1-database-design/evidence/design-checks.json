@@ -1,0 +1,23 @@
+{
+  "reviewed_at_utc": "2026-11-11T10:03:38.007393+00:00",
+  "scope": "seed-only schema and constraints; probes rolled back",
+  "counts": {
+    "customers": 5000,
+    "accounts": 5001,
+    "transfers": 200000,
+    "ledger_entries": 400000
+  },
+  "passed": 10,
+  "checks": [
+    "deterministic seed row counts",
+    "duplicate email rejected",
+    "unknown customer rejected",
+    "negative customer balance rejected",
+    "second clearing account rejected",
+    "zero transfer amount rejected",
+    "missing postings rejected at commit",
+    "application cannot edit balances directly",
+    "every account reconciles and ledger nets to zero",
+    "reconciliation detects injected one-kobo discrepancy; rolled back"
+  ]
+}

@@ -1,0 +1,7 @@
+Limit  (cost=0.42..82.76 rows=20 width=32) (actual time=0.001..0.004 rows=20 loops=1)
+  Buffers: shared hit=23
+  ->  Index Scan using transfers_destination_recent on transfers  (cost=0.42..165.10 rows=40 width=32) (actual time=0.001..0.003 rows=20 loops=1)
+        Index Cond: (destination_account = 42)
+        Buffers: shared hit=23
+Planning Time: 0.008 ms
+Execution Time: 0.006 ms
