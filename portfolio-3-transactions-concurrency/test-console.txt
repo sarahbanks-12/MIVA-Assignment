@@ -1,0 +1,45 @@
+commit {'source_kobo': 75000, 'destination_kobo': 25000, 'transfer_id': 200003}
+idempotent retry {'same_transfer_id': 200003, 'balances_unchanged': True}
+idempotency payload conflict {'sqlstate': 'P0001', 'error': 'Idempotency key reused with different parameters'}
+explicit rollback {'source_kobo': 75000, 'inside_transaction_source_kobo': 65000, 'transaction_rows': 0}
+insufficient funds {'sqlstate': 'P0001', 'error': 'Insufficient funds'}
+negative amount {'sqlstate': 'P0001', 'error': 'Invalid request'}
+self transfer {'sqlstate': 'P0001', 'error': 'Invalid request'}
+missing account {'sqlstate': 'P0001', 'error': 'Unknown account'}
+wrong operation type {'sqlstate': 'P0001', 'error': 'Account kinds do not match operation'}
+application cannot alter balances {'sqlstate': '42501', 'error': 'permission denied for table accounts'}
+application cannot delete ledger {'sqlstate': '42501', 'error': 'permission denied for table ledger_entries'}
+compensating reversal preserves original {'original': 200003, 'reversal': 200005}
+duplicate reversal {'sqlstate': 'P0001', 'error': 'Already reversed'}
+invalid reversal reference {'sqlstate': 'P0001', 'error': 'Invalid reversal'}
+deferred check with public search path {'committed': True}
+withdrawal committed {'source_kobo': 89900}
+concurrent spend controlled {'observed_blocking': True, 'first': 'committed', 'second': {'result': 'rejected', 'error': 'Insufficient funds', 'sqlstate': 'P0001'}, 'remaining_kobo': 30000}
+concurrent idempotent retry {'observed_blocking': True, 'same_transfer_id': 200009}
+isolation READ COMMITTED {'first_read': 100, 'second_read': 200}
+isolation REPEATABLE READ {'first_read': 100, 'second_read': 100}
+unsafe lost update reproduced {'expected_with_both_debits': 30, 'actual': 60}
+repeatable read rejects the lost update {'second_writer_sqlstate': '40001', 'committed_value': 70}
+deferred balanced-posting constraint {'error': 'Transfer 200010 must have its two balanced postings'}
+zero amount {'sqlstate': 'P0001', 'error': 'Invalid request'}
+null amount {'sqlstate': 'P0001', 'error': 'Invalid request'}
+unknown operation type {'sqlstate': '23514', 'error': 'new row for relation "transfers" violates check constraint "transfers_kind_check"'}
+reversal of a reversal {'sqlstate': 'P0001', 'error': 'Invalid reversal'}
+later transaction error rolls back all postings {'balances_unchanged': True, 'transfer_rows': 0}
+reversal with wrong amount {'sqlstate': 'P0001', 'error': 'Invalid reversal'}
+reversal with wrong accounts {'sqlstate': 'P0001', 'error': 'Invalid reversal'}
+competing reversals commit once {'original': 200014, 'outcomes': ['P0001:Already reversed', 'committed']}
+waiting retry proceeds after first caller rolls back {'rolled_back_id': 200016, 'committed_id': 200017}
+opposite-direction transfers do not deadlock {'workers': 8, 'transfers': 320, 'failures': 0, 'balances_unchanged': True}
+application cannot insert transfers {'sqlstate': '42501', 'error': 'permission denied for table transfers'}
+application role is function-only for writes {'write_privileges_found': 0, 'app_can_execute': True, 'public_can_execute': False}
+deferred constraint rejects one posting {'sqlstate': 'P0001', 'error': 'Transfer 900001 must have its two balanced postings'}
+deferred constraint rejects two credits {'sqlstate': 'P0001', 'error': 'Transfer 900002 must have its two balanced postings'}
+deferred constraint rejects wrong amounts {'sqlstate': 'P0001', 'error': 'Transfer 900003 must have its two balanced postings'}
+reversal_of is unique {'sqlstate': '23505', 'error': 'duplicate key value violates unique constraint "transfers_reversal_of_key"'}
+account owner foreign key {'sqlstate': '23503', 'error': 'insert or update on table "accounts" violates foreign key constraint "accounts_customer_id_fkey"'}
+unique account number {'sqlstate': '23505', 'error': 'duplicate key value violates unique constraint "accounts_account_number_key"'}
+nonnegative customer balance {'sqlstate': '23514', 'error': 'new row for relation "accounts" violates check constraint "accounts_check"'}
+only one clearing account {'sqlstate': '23505', 'error': 'duplicate key value violates unique constraint "accounts_one_clearing"'}
+reconciliation detects an injected 1-kobo error {'flagged_account': 6001, 'differences_after_rollback': 0}
+final ledger invariants {'balance_discrepancies': 0, 'global_net_kobo': 0, 'negative_customer_balances': 0}

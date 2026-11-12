@@ -2,7 +2,7 @@ import os, json
 from pathlib import Path
 import psycopg
 ROOT=Path(__file__).resolve().parents[2]
-DSN=os.getenv('CEDAR_DSN','host=127.0.0.1 port=55483 user=portfolio dbname=cedar')
+DSN=os.getenv('CEDAR_DSN','host=127.0.0.1 port=55503 user=portfolio dbname=cedar')
 def connect(autocommit=False):
     c=psycopg.connect(DSN,autocommit=autocommit)
     c.execute('SET search_path=bank,public')

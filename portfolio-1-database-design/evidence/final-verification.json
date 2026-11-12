@@ -1,0 +1,28 @@
+{
+  "verified_at_utc": "2026-11-12T10:24:23.322297+00:00",
+  "verification": "Captured plans checked against aggregates and expected plan shapes; current database reconciled. Written summary reviewed separately.",
+  "transaction_checks_passed": 45,
+  "nosql_behaviours_passed": 5,
+  "replication": "marker and its two postings replayed; streaming async status and read-only rejection verified",
+  "manual_sql_examples": "Run on cedar_examples copy: committed transfer and reversal preserved, rolled-back request absent, reconciliation returned no differences.",
+  "query_plans_captured": [
+    "Q1",
+    "Q2",
+    "Q3",
+    "Q4",
+    "Q5"
+  ],
+  "final_database_counts": {
+    "customers": 5004,
+    "accounts": 5005,
+    "transfers": 200333,
+    "ledger_entries": 400666
+  },
+  "final_balance_discrepancies": 0,
+  "unbalanced_transfers": 0,
+  "pdf": "Personalised LMS PDF is not part of this repository or this verification.",
+  "publication": "Repository: https://github.com/sarahbanks-12/MIVA-Assignment; assessor access not verified",
+  "lms": "Not submitted",
+  "student_review": "Pending",
+  "semester_long_progressive_history": "Not established; do not backdate commits"
+}

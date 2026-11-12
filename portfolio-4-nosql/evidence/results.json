@@ -1,0 +1,58 @@
+{
+  "server_version": "8.10.3",
+  "model": "Redis key-value store with hashes, sorted sets and an atomic Lua counter",
+  "preferences": {
+    "customer_id": "42",
+    "channel": "push",
+    "language": "en",
+    "daily_digest": "false"
+  },
+  "concurrent_counter": "20",
+  "ttl_seconds": 58,
+  "fixed_window_before_ms": 3895,
+  "fixed_window_after_ms": 3893,
+  "unique_counter_results": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "top_risks": [
+    [
+      "transfer-demo-2",
+      95.0
+    ],
+    [
+      "transfer-demo-1",
+      70.0
+    ]
+  ],
+  "checks": {
+    "hash_create_read_update_delete": true,
+    "20_concurrent_increments": true,
+    "fixed_window_ttl": true,
+    "expiry_observed": true,
+    "risk_ranking": true
+  },
+  "persistence": {
+    "appendfsync": "everysec",
+    "appendonly": "yes"
+  },
+  "scope": "No customer PII or authoritative balances stored; demo risk scores are synthetic, not a fraud model."
+}

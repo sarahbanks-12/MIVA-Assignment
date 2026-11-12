@@ -1,94 +1,95 @@
 -- Q1: most recent incoming transactions: fixed account and stable tie-break.
-Limit  (cost=0.42..82.76 rows=20 width=32) (actual time=0.002..0.006 rows=20 loops=1)
+Limit  (cost=0.42..82.75 rows=20 width=32) (actual time=0.003..0.009 rows=20 loops=1)
   Buffers: shared hit=23
-  ->  Index Scan using transfers_destination_recent on transfers  (cost=0.42..165.10 rows=40 width=32) (actual time=0.002..0.005 rows=20 loops=1)
+  ->  Index Scan using transfers_destination_recent on transfers  (cost=0.42..165.08 rows=40 width=32) (actual time=0.003..0.008 rows=20 loops=1)
         Index Cond: (destination_account = 42)
         Buffers: shared hit=23
-Planning Time: 0.014 ms
-Execution Time: 0.010 ms
+Planning Time: 0.021 ms
+Execution Time: 0.012 ms
 
 -- Q2: account totals per customer, including customers without accounts.
-Limit  (cost=522.20..522.23 rows=10 width=58) (actual time=1.923..1.924 rows=10 loops=1)
-  Buffers: shared hit=151
-  ->  Sort  (cost=522.20..534.70 rows=5000 width=58) (actual time=1.923..1.924 rows=10 loops=1)
+Limit  (cost=533.82..533.85 rows=10 width=58) (actual time=3.243..3.244 rows=10 loops=1)
+  Buffers: shared hit=157
+  ->  Sort  (cost=533.82..546.32 rows=5000 width=58) (actual time=3.243..3.244 rows=10 loops=1)
         Sort Key: (COALESCE(sum(a.balance_kobo), '0'::numeric)) DESC, c.customer_id
         Sort Method: top-N heapsort  Memory: 26kB
-        Buffers: shared hit=151
-        ->  HashAggregate  (cost=351.65..414.15 rows=5000 width=58) (actual time=1.303..1.634 rows=5000 loops=1)
+        Buffers: shared hit=157
+        ->  HashAggregate  (cost=363.28..425.78 rows=5000 width=58) (actual time=2.188..2.750 rows=5004 loops=1)
               Group Key: c.customer_id
               Batches: 1  Memory Usage: 1233kB
-              Buffers: shared hit=151
-              ->  Hash Right Join  (cost=169.50..326.65 rows=5001 width=34) (actual time=0.341..0.917 rows=5000 loops=1)
+              Buffers: shared hit=157
+              ->  Hash Right Join  (cost=169.50..336.68 rows=5320 width=34) (actual time=0.616..1.550 rows=5004 loops=1)
                     Hash Cond: (a.customer_id = c.customer_id)
-                    Buffers: shared hit=151
-                    ->  Seq Scan on accounts a  (cost=0.00..144.01 rows=5001 width=16) (actual time=0.006..0.126 rows=5001 loops=1)
-                          Buffers: shared hit=94
-                    ->  Hash  (cost=107.00..107.00 rows=5000 width=26) (actual time=0.335..0.335 rows=5000 loops=1)
+                    Buffers: shared hit=157
+                    ->  Seq Scan on accounts a  (cost=0.00..153.20 rows=5320 width=16) (actual time=0.010..0.212 rows=5005 loops=1)
+                          Buffers: shared hit=100
+                    ->  Hash  (cost=107.00..107.00 rows=5000 width=26) (actual time=0.604..0.604 rows=5004 loops=1)
                           Buckets: 8192  Batches: 1  Memory Usage: 352kB
                           Buffers: shared hit=57
-                          ->  Seq Scan on customers c  (cost=0.00..107.00 rows=5000 width=26) (actual time=0.001..0.169 rows=5000 loops=1)
+                          ->  Seq Scan on customers c  (cost=0.00..107.00 rows=5000 width=26) (actual time=0.003..0.306 rows=5004 loops=1)
                                 Buffers: shared hit=57
 Planning:
   Buffers: shared hit=8
-Planning Time: 0.030 ms
-Execution Time: 1.932 ms
+Planning Time: 0.051 ms
+Execution Time: 3.256 ms
 
 -- Q3: daily deposit volume (fixed UTC grouping avoids session timezone drift).
-GroupAggregate  (cost=26802.14..32302.14 rows=200000 width=44) (actual time=32.588..43.963 rows=47 loops=1)
+GroupAggregate  (cost=26900.03..32419.39 rows=200704 width=44) (actual time=47.297..66.384 rows=48 loops=1)
   Group Key: (((created_at AT TIME ZONE 'UTC'::text))::date)
-  Buffers: shared hit=2273, temp read=638 written=641
-  ->  Sort  (cost=26802.14..27302.14 rows=200000 width=12) (actual time=32.338..37.798 rows=200000 loops=1)
+  Buffers: shared hit=2281, temp read=638 written=641
+  ->  Sort  (cost=26900.03..27401.79 rows=200704 width=12) (actual time=46.856..56.018 rows=200003 loops=1)
         Sort Key: (((created_at AT TIME ZONE 'UTC'::text))::date)
         Sort Method: external merge  Disk: 5104kB
-        Buffers: shared hit=2273, temp read=638 written=641
-        ->  Seq Scan on transfers  (cost=0.00..5773.00 rows=200000 width=12) (actual time=0.003..18.986 rows=200000 loops=1)
+        Buffers: shared hit=2281, temp read=638 written=641
+        ->  Seq Scan on transfers  (cost=0.00..5793.32 rows=200704 width=12) (actual time=0.004..31.482 rows=200003 loops=1)
               Filter: (kind = 'deposit'::text)
-              Buffers: shared hit=2273
-Planning Time: 0.037 ms
-Execution Time: 45.824 ms
+              Rows Removed by Filter: 330
+              Buffers: shared hit=2281
+Planning Time: 0.043 ms
+Execution Time: 74.187 ms
 
 -- Q4: reconciliation, expected to return zero discrepancies.
-HashAggregate  (cost=9805.41..9892.93 rows=4976 width=48) (actual time=58.635..58.635 rows=0 loops=1)
+HashAggregate  (cost=9852.44..9945.54 rows=5293 width=48) (actual time=102.884..102.886 rows=0 loops=1)
   Group Key: a.account_id
   Filter: ((a.balance_kobo)::numeric <> COALESCE(sum(l.delta_kobo), '0'::numeric))
   Batches: 1  Memory Usage: 977kB
-  Rows Removed by Filter: 5001
-  Buffers: shared hit=2642
-  ->  Hash Right Join  (cost=206.52..7805.41 rows=400000 width=24) (actual time=0.393..37.547 rows=400000 loops=1)
+  Rows Removed by Filter: 5005
+  Buffers: shared hit=2657
+  ->  Hash Right Join  (cost=219.70..7845.37 rows=401413 width=24) (actual time=0.697..66.535 rows=400666 loops=1)
         Hash Cond: (l.account_id = a.account_id)
-        Buffers: shared hit=2642
-        ->  Seq Scan on ledger_entries l  (cost=0.00..6548.00 rows=400000 width=16) (actual time=0.002..10.229 rows=400000 loops=1)
-              Buffers: shared hit=2548
-        ->  Hash  (cost=144.01..144.01 rows=5001 width=16) (actual time=0.390..0.390 rows=5001 loops=1)
+        Buffers: shared hit=2657
+        ->  Seq Scan on ledger_entries l  (cost=0.00..6571.13 rows=401413 width=16) (actual time=0.005..20.652 rows=400666 loops=1)
+              Buffers: shared hit=2557
+        ->  Hash  (cost=153.20..153.20 rows=5320 width=16) (actual time=0.689..0.689 rows=5005 loops=1)
               Buckets: 8192  Batches: 1  Memory Usage: 299kB
-              Buffers: shared hit=94
-              ->  Seq Scan on accounts a  (cost=0.00..144.01 rows=5001 width=16) (actual time=0.014..0.221 rows=5001 loops=1)
-                    Buffers: shared hit=94
+              Buffers: shared hit=100
+              ->  Seq Scan on accounts a  (cost=0.00..153.20 rows=5320 width=16) (actual time=0.023..0.389 rows=5005 loops=1)
+                    Buffers: shared hit=100
 Planning:
   Buffers: shared hit=7
-Planning Time: 0.056 ms
-Execution Time: 58.647 ms
+Planning Time: 0.113 ms
+Execution Time: 102.907 ms
 
 -- Q5: audit trail linking a compensating transfer to the original.
-Gather Merge  (cost=4841.46..4842.84 rows=12 width=32) (actual time=4.443..5.249 rows=0 loops=1)
-  Workers Planned: 1
-  Workers Launched: 1
-  Buffers: shared hit=2281
-  ->  Sort  (cost=3841.45..3841.48 rows=12 width=32) (actual time=3.634..3.634 rows=0 loops=2)
-        Sort Key: t.transfer_id
-        Sort Method: quicksort  Memory: 25kB
-        Buffers: shared hit=2281
-        Worker 0:  Sort Method: quicksort  Memory: 25kB
-        ->  Nested Loop Left Join  (cost=0.30..3841.23 rows=12 width=32) (actual time=3.630..3.630 rows=0 loops=2)
-              Buffers: shared hit=2273
-              ->  Parallel Seq Scan on transfers t  (cost=0.00..3743.59 rows=12 width=24) (actual time=3.630..3.630 rows=0 loops=2)
-                    Filter: (request_key ~~ 'test-%'::text)
-                    Rows Removed by Filter: 100000
-                    Buffers: shared hit=2273
-              ->  Memoize  (cost=0.30..8.12 rows=1 width=16) (never executed)
-                    Cache Key: t.transfer_id
-                    Cache Mode: logical
-                    ->  Index Scan using transfers_reversal_of_key on transfers r  (cost=0.29..8.11 rows=1 width=16) (never executed)
-                          Index Cond: (reversal_of = t.transfer_id)
-Planning Time: 0.050 ms
-Execution Time: 5.257 ms
+Sort  (cost=171.62..171.67 rows=20 width=32) (actual time=0.259..0.268 rows=332 loops=1)
+  Sort Key: t.transfer_id
+  Sort Method: quicksort  Memory: 43kB
+  Buffers: shared hit=690
+  ->  Nested Loop Left Join  (cost=0.72..171.19 rows=20 width=32) (actual time=0.008..0.223 rows=332 loops=1)
+        Buffers: shared hit=690
+        ->  Index Scan using transfers_request_key_key on transfers t  (cost=0.42..8.44 rows=20 width=24) (actual time=0.006..0.044 rows=332 loops=1)
+              Index Cond: ((request_key >= 'test-'::text) AND (request_key < 'test.'::text))
+              Filter: (request_key ~~ 'test-%'::text)
+              Buffers: shared hit=24
+        ->  Memoize  (cost=0.30..8.12 rows=1 width=16) (actual time=0.000..0.000 rows=0 loops=332)
+              Cache Key: t.transfer_id
+              Cache Mode: logical
+              Hits: 0  Misses: 332  Evictions: 0  Overflows: 0  Memory Usage: 24kB
+              Buffers: shared hit=666
+              ->  Index Scan using transfers_reversal_of_key on transfers r  (cost=0.29..8.11 rows=1 width=16) (actual time=0.000..0.000 rows=0 loops=332)
+                    Index Cond: (reversal_of = t.transfer_id)
+                    Buffers: shared hit=666
+Planning:
+  Buffers: shared hit=8
+Planning Time: 0.059 ms
+Execution Time: 0.282 ms

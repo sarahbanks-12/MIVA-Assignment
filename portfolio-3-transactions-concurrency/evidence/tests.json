@@ -1,0 +1,284 @@
+[
+  {
+    "test": "commit",
+    "status": "PASS",
+    "source_kobo": 75000,
+    "destination_kobo": 25000,
+    "transfer_id": 200003
+  },
+  {
+    "test": "idempotent retry",
+    "status": "PASS",
+    "same_transfer_id": 200003,
+    "balances_unchanged": true
+  },
+  {
+    "test": "idempotency payload conflict",
+    "status": "PASS",
+    "sqlstate": "P0001",
+    "error": "Idempotency key reused with different parameters"
+  },
+  {
+    "test": "explicit rollback",
+    "status": "PASS",
+    "source_kobo": 75000,
+    "inside_transaction_source_kobo": 65000,
+    "transaction_rows": 0
+  },
+  {
+    "test": "insufficient funds",
+    "status": "PASS",
+    "sqlstate": "P0001",
+    "error": "Insufficient funds"
+  },
+  {
+    "test": "negative amount",
+    "status": "PASS",
+    "sqlstate": "P0001",
+    "error": "Invalid request"
+  },
+  {
+    "test": "self transfer",
+    "status": "PASS",
+    "sqlstate": "P0001",
+    "error": "Invalid request"
+  },
+  {
+    "test": "missing account",
+    "status": "PASS",
+    "sqlstate": "P0001",
+    "error": "Unknown account"
+  },
+  {
+    "test": "wrong operation type",
+    "status": "PASS",
+    "sqlstate": "P0001",
+    "error": "Account kinds do not match operation"
+  },
+  {
+    "test": "application cannot alter balances",
+    "status": "PASS",
+    "sqlstate": "42501",
+    "error": "permission denied for table accounts"
+  },
+  {
+    "test": "application cannot delete ledger",
+    "status": "PASS",
+    "sqlstate": "42501",
+    "error": "permission denied for table ledger_entries"
+  },
+  {
+    "test": "compensating reversal preserves original",
+    "status": "PASS",
+    "original": 200003,
+    "reversal": 200005
+  },
+  {
+    "test": "duplicate reversal",
+    "status": "PASS",
+    "sqlstate": "P0001",
+    "error": "Already reversed"
+  },
+  {
+    "test": "invalid reversal reference",
+    "status": "PASS",
+    "sqlstate": "P0001",
+    "error": "Invalid reversal"
+  },
+  {
+    "test": "deferred check with public search path",
+    "status": "PASS",
+    "committed": true
+  },
+  {
+    "test": "withdrawal committed",
+    "status": "PASS",
+    "source_kobo": 89900
+  },
+  {
+    "test": "concurrent spend controlled",
+    "status": "PASS",
+    "observed_blocking": true,
+    "first": "committed",
+    "second": {
+      "result": "rejected",
+      "error": "Insufficient funds",
+      "sqlstate": "P0001"
+    },
+    "remaining_kobo": 30000
+  },
+  {
+    "test": "concurrent idempotent retry",
+    "status": "PASS",
+    "observed_blocking": true,
+    "same_transfer_id": 200009
+  },
+  {
+    "test": "isolation READ COMMITTED",
+    "status": "PASS",
+    "first_read": 100,
+    "second_read": 200
+  },
+  {
+    "test": "isolation REPEATABLE READ",
+    "status": "PASS",
+    "first_read": 100,
+    "second_read": 100
+  },
+  {
+    "test": "unsafe lost update reproduced",
+    "status": "PASS",
+    "expected_with_both_debits": 30,
+    "actual": 60
+  },
+  {
+    "test": "repeatable read rejects the lost update",
+    "status": "PASS",
+    "second_writer_sqlstate": "40001",
+    "committed_value": 70
+  },
+  {
+    "test": "deferred balanced-posting constraint",
+    "status": "PASS",
+    "error": "Transfer 200010 must have its two balanced postings"
+  },
+  {
+    "test": "zero amount",
+    "status": "PASS",
+    "sqlstate": "P0001",
+    "error": "Invalid request"
+  },
+  {
+    "test": "null amount",
+    "status": "PASS",
+    "sqlstate": "P0001",
+    "error": "Invalid request"
+  },
+  {
+    "test": "unknown operation type",
+    "status": "PASS",
+    "sqlstate": "23514",
+    "error": "new row for relation \"transfers\" violates check constraint \"transfers_kind_check\""
+  },
+  {
+    "test": "reversal of a reversal",
+    "status": "PASS",
+    "sqlstate": "P0001",
+    "error": "Invalid reversal"
+  },
+  {
+    "test": "later transaction error rolls back all postings",
+    "status": "PASS",
+    "balances_unchanged": true,
+    "transfer_rows": 0
+  },
+  {
+    "test": "reversal with wrong amount",
+    "status": "PASS",
+    "sqlstate": "P0001",
+    "error": "Invalid reversal"
+  },
+  {
+    "test": "reversal with wrong accounts",
+    "status": "PASS",
+    "sqlstate": "P0001",
+    "error": "Invalid reversal"
+  },
+  {
+    "test": "competing reversals commit once",
+    "status": "PASS",
+    "original": 200014,
+    "outcomes": [
+      "P0001:Already reversed",
+      "committed"
+    ]
+  },
+  {
+    "test": "waiting retry proceeds after first caller rolls back",
+    "status": "PASS",
+    "rolled_back_id": 200016,
+    "committed_id": 200017
+  },
+  {
+    "test": "opposite-direction transfers do not deadlock",
+    "status": "PASS",
+    "workers": 8,
+    "transfers": 320,
+    "failures": 0,
+    "balances_unchanged": true
+  },
+  {
+    "test": "application cannot insert transfers",
+    "status": "PASS",
+    "sqlstate": "42501",
+    "error": "permission denied for table transfers"
+  },
+  {
+    "test": "application role is function-only for writes",
+    "status": "PASS",
+    "write_privileges_found": 0,
+    "app_can_execute": true,
+    "public_can_execute": false
+  },
+  {
+    "test": "deferred constraint rejects one posting",
+    "status": "PASS",
+    "sqlstate": "P0001",
+    "error": "Transfer 900001 must have its two balanced postings"
+  },
+  {
+    "test": "deferred constraint rejects two credits",
+    "status": "PASS",
+    "sqlstate": "P0001",
+    "error": "Transfer 900002 must have its two balanced postings"
+  },
+  {
+    "test": "deferred constraint rejects wrong amounts",
+    "status": "PASS",
+    "sqlstate": "P0001",
+    "error": "Transfer 900003 must have its two balanced postings"
+  },
+  {
+    "test": "reversal_of is unique",
+    "status": "PASS",
+    "sqlstate": "23505",
+    "error": "duplicate key value violates unique constraint \"transfers_reversal_of_key\""
+  },
+  {
+    "test": "account owner foreign key",
+    "status": "PASS",
+    "sqlstate": "23503",
+    "error": "insert or update on table \"accounts\" violates foreign key constraint \"accounts_customer_id_fkey\""
+  },
+  {
+    "test": "unique account number",
+    "status": "PASS",
+    "sqlstate": "23505",
+    "error": "duplicate key value violates unique constraint \"accounts_account_number_key\""
+  },
+  {
+    "test": "nonnegative customer balance",
+    "status": "PASS",
+    "sqlstate": "23514",
+    "error": "new row for relation \"accounts\" violates check constraint \"accounts_check\""
+  },
+  {
+    "test": "only one clearing account",
+    "status": "PASS",
+    "sqlstate": "23505",
+    "error": "duplicate key value violates unique constraint \"accounts_one_clearing\""
+  },
+  {
+    "test": "reconciliation detects an injected 1-kobo error",
+    "status": "PASS",
+    "flagged_account": 6001,
+    "differences_after_rollback": 0
+  },
+  {
+    "test": "final ledger invariants",
+    "status": "PASS",
+    "balance_discrepancies": 0,
+    "global_net_kobo": 0,
+    "negative_customer_balances": 0
+  }
+]

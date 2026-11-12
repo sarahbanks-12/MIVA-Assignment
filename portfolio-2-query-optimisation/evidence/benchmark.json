@@ -1,37 +1,37 @@
 {
-  "platform": "macOS-27.2-arm64-arm-64bit",
+  "platform": "macOS-27.2.1-arm64-arm-64bit",
   "postgres": "PostgreSQL 16.13 (Homebrew) on aarch64-apple-darwin25.2.0, compiled by Apple clang version 17.0.0 (clang-1700.6.3.2), 64-bit",
   "rows": 200000,
   "method": "One warm-up and seven measured EXPLAIN ANALYZE runs per configuration; same session and query; warm-cache local timings, not production capacity.",
   "before": {
     "execution_ms": [
-      4.932,
-      5.016,
-      4.63,
-      5.073,
-      4.55,
-      4.545,
-      4.528
+      7.156,
+      7.118,
+      6.984,
+      6.963,
+      6.975,
+      6.988,
+      7.053
     ],
-    "median_ms": 4.63,
-    "min_ms": 4.528,
-    "max_ms": 5.073,
+    "median_ms": 6.988,
+    "min_ms": 6.963,
+    "max_ms": 7.156,
     "root_shared_hit_blocks": 2317,
     "root_shared_read_blocks": 0
   },
   "after": {
     "execution_ms": [
-      0.007,
-      0.006,
-      0.005,
-      0.005,
-      0.005,
-      0.005,
-      0.005
+      0.012,
+      0.01,
+      0.01,
+      0.009,
+      0.009,
+      0.009,
+      0.009
     ],
-    "median_ms": 0.005,
-    "min_ms": 0.005,
-    "max_ms": 0.007,
+    "median_ms": 0.009,
+    "min_ms": 0.009,
+    "max_ms": 0.012,
     "root_shared_hit_blocks": 23,
     "root_shared_read_blocks": 0
   },

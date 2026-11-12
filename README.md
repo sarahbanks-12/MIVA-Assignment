@@ -20,7 +20,7 @@ MIVA-Assignment/
 
 This repository is being populated from an existing local portfolio. The initial commit establishes its structure. Implementation files and evidence will be added as the corresponding activities are reviewed; subsequent commits will record the review, corrections and improvements actually made.
 
-The existing implementation uses PostgreSQL for the wallet ledger, Redis for auxiliary NoSQL examples, and a local PostgreSQL standby for replication. The 11 November 2026 review adds the database design and query-optimisation implementation with fresh local evidence. Portfolios 3–5 remain placeholders pending their scheduled review on 12 November.
+The 11 November review published database design and query optimisation. The 12 November review added transactions, Redis and physical PostgreSQL replication, and reran the integrated lab. All five activities are now included. These commits record review and publication of the pre-existing local implementation.
 
 ## Portfolio activities
 
@@ -32,33 +32,30 @@ The existing implementation uses PostgreSQL for the wallet ledger, Redis for aux
 
 The final LMS documentation will summarise all five activities, include the repository link, a technical reflection, references and the required AI-use declaration.
 
-## Run the currently published activities
+## Reproduce the complete lab
 
-Requirements: PostgreSQL 16 command-line tools on PATH, Python 3.9 or later, and an unused local port 55493. Use a new, disposable local cluster: the SQL creates a schema and a cluster-level application role. Do not run it in a shared or production database. The loopback-only lab uses trust authentication and synthetic data.
+Requirements: PostgreSQL 16 command-line tools, Redis server/CLI, and Python 3.9 or later. Add PostgreSQL and Redis to PATH; on this Mac PostgreSQL is in `/opt/homebrew/opt/postgresql@16/bin` and Redis in `/opt/homebrew/bin`.
 
-Run from the repository root. On Homebrew, first add `/opt/homebrew/opt/postgresql@16/bin` to PATH if necessary.
+Run from the repository root in a fresh checkout:
 
 ```sh
-set -e
 python3 -m venv .venv
 .venv/bin/pip install -r portfolio-1-database-design/requirements.txt
-mkdir -p .runtime
-initdb -D .runtime/review-pg -U portfolio --auth=trust
-pg_ctl -D .runtime/review-pg -l .runtime/postgres.log -o '-p 55493 -h 127.0.0.1 -k /tmp' start
-createdb -h 127.0.0.1 -p 55493 -U portfolio cedar
-export CEDAR_DSN='host=127.0.0.1 port=55493 user=portfolio dbname=cedar'
-psql "$CEDAR_DSN" -v ON_ERROR_STOP=1 -f portfolio-1-database-design/schema.sql -f portfolio-1-database-design/seed.sql > portfolio-1-database-design/evidence/build.txt
-.venv/bin/python portfolio-1-database-design/scripts/check_design.py
-.venv/bin/python portfolio-2-query-optimisation/scripts/benchmark.py
-.venv/bin/python portfolio-2-query-optimisation/scripts/explain_queries.py > portfolio-2-query-optimisation/evidence/all-query-plans.txt
-psql "$CEDAR_DSN" -v ON_ERROR_STOP=1 -f portfolio-2-query-optimisation/queries.sql > portfolio-2-query-optimisation/evidence/all-query-results.txt
-pg_ctl -D .runtime/review-pg stop
+bash portfolio-1-database-design/scripts/run_lab.sh
+.venv/bin/python portfolio-1-database-design/scripts/verify_portfolio.py
+bash portfolio-1-database-design/scripts/stop_lab.sh
 ```
 
-The cluster directory must not already exist for the initial setup. To reuse an existing lab, start its server and rerun only the checks and queries; do not reload the schema or seed. If a command fails, stop the server with the final command after inspecting the error. A new benchmark overwrites its evidence; update the written measurements when publishing new results.
+The script refuses to overwrite an existing primary or use occupied ports. It creates disposable, loopback-only PostgreSQL services on 55503/55504 and Redis on 56403, with synthetic data under ignored `.runtime/`. Trust authentication is for this local exercise only. Do not run the setup in a shared or production cluster. Services remain running for inspection until stopped; if any check fails, inspect its output and run the stop command. Use `start_lab.sh` to reopen an existing complete lab. Transaction fixture loading requires a fresh database, so do not rerun `run_lab.sh` on the same data directory.
 
-## Review evidence and AI use
+The earlier ten-check design test expects a seed-only database. To reproduce it, insert its invocation immediately after the seed step in `run_lab.sh`, before transactions add fixtures. Its retained `design-checks.json` is dated 11 November. The full-lab evidence and final verification are dated 12 November. Generated measurements replace prior captures; the written analysis must be updated when publishing a rerun.
 
-The 11 November review passed ten design checks on 5,000 customers, 5,001 accounts, 200,000 transfers and 400,000 postings. The benchmark checked identical query results and all fourteen measured plan shapes before and after indexing. All five supplied queries have fresh results and execution plans. Timings are local measurements, not production performance guarantees.
+## Results and documentation
 
-OpenAI Codex assisted with the original implementation and performed this review, execution and documentation update. Anthropic Claude (Claude Code) previously audited the existing local package. These are agent-performed checks; student-performed verification has not been confirmed. Source acknowledgements are retained in [References and provenance](portfolio-1-database-design/REFERENCES.md). The local implementation predates these GitHub review commits.
+The integrated review passed 45 transaction checks, five Redis behaviour checks and the replication assertions. Final totals are 5,004 customers, 5,005 accounts, 200,333 transfers and 400,666 ledger entries, with no balance discrepancies or unbalanced transfers. All five supplied queries have recorded results and execution plans. The benchmark compares seven runs per configuration and checks result equality. These are local tests, not production guarantees or a cloud deployment.
+
+See the [portfolio summary](portfolio-1-database-design/submission/summary.md), [verification evidence](portfolio-1-database-design/evidence/final-verification.json) and [references](portfolio-1-database-design/REFERENCES.md). The unpersonalised summary is included; the personalised LMS PDF remains local and was not rebuilt during this review. LMS submission has not been performed. The repository remains public at the user's request; the brief's private-repository requirement and assessor access still need to be resolved before submission.
+
+## AI use
+
+OpenAI Codex assisted with the original implementation and performed these reviews, test runs and documentation updates. Anthropic Claude (Claude Code) previously audited the local package. These are agent-performed checks; student-performed verification has not been confirmed. Required source acknowledgements are retained. The local implementation predates these GitHub review commits, and two days of review do not establish semester-long development.

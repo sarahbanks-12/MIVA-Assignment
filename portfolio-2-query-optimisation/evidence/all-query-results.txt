@@ -1,6 +1,7 @@
 SET
- transfer_id | amount_kobo |  kind   |       created_at
--------------+-------------+---------+------------------------
+ transfer_id | amount_kobo |  kind   |          created_at
+-------------+-------------+---------+------------------------------
+      200339 |       12345 | deposit | 2026-11-12 11:24:08.87331+01
       195041 |       14100 | deposit | 2026-10-16 04:33:40+01
       190041 |       14100 | deposit | 2026-10-15 00:47:00+01
       185041 |       14100 | deposit | 2026-10-13 21:00:20+01
@@ -20,7 +21,6 @@ SET
       115041 |       14100 | deposit | 2026-09-27 16:07:00+01
       110041 |       14100 | deposit | 2026-09-26 12:20:20+01
       105041 |       14100 | deposit | 2026-09-25 08:33:40+01
-      100041 |       14100 | deposit | 2026-09-24 04:47:00+01
 (20 rows)
 
  customer_id |     full_name     | total_kobo
@@ -86,12 +86,345 @@ SET
  2026-10-15 |     4320 |    64664000
  2026-10-16 |     4320 |    64504000
  2026-10-17 |     1281 |    19226000
-(47 rows)
+ 2026-11-12 |        3 |      212345
+(48 rows)
 
  account_id | balance_kobo | ledger_balance
 ------------+--------------+----------------
 (0 rows)
 
- transfer_id | kind | amount_kobo | reversed_by
--------------+------+-------------+-------------
-(0 rows)
+ transfer_id |    kind    | amount_kobo | reversed_by
+-------------+------------+-------------+-------------
+      200001 | deposit    |      100000 |
+      200002 | deposit    |      100000 |
+      200003 | transfer   |       25000 |      200005
+      200005 | reversal   |       25000 |
+      200006 | transfer   |         100 |
+      200007 | withdrawal |       10000 |
+      200008 | transfer   |       70000 |
+      200009 | transfer   |        1000 |
+      200013 | transfer   |         500 |
+      200014 | transfer   |         500 |      200015
+      200015 | reversal   |         500 |
+      200017 | transfer   |         300 |
+      200018 | transfer   |           1 |
+      200019 | transfer   |           1 |
+      200020 | transfer   |           1 |
+      200021 | transfer   |           1 |
+      200022 | transfer   |           1 |
+      200023 | transfer   |           1 |
+      200024 | transfer   |           1 |
+      200025 | transfer   |           1 |
+      200026 | transfer   |           1 |
+      200027 | transfer   |           1 |
+      200028 | transfer   |           1 |
+      200029 | transfer   |           1 |
+      200030 | transfer   |           1 |
+      200031 | transfer   |           1 |
+      200032 | transfer   |           1 |
+      200033 | transfer   |           1 |
+      200034 | transfer   |           1 |
+      200035 | transfer   |           1 |
+      200036 | transfer   |           1 |
+      200037 | transfer   |           1 |
+      200038 | transfer   |           1 |
+      200039 | transfer   |           1 |
+      200040 | transfer   |           1 |
+      200041 | transfer   |           1 |
+      200042 | transfer   |           1 |
+      200043 | transfer   |           1 |
+      200044 | transfer   |           1 |
+      200045 | transfer   |           1 |
+      200046 | transfer   |           1 |
+      200047 | transfer   |           1 |
+      200048 | transfer   |           1 |
+      200049 | transfer   |           1 |
+      200050 | transfer   |           1 |
+      200051 | transfer   |           1 |
+      200052 | transfer   |           1 |
+      200053 | transfer   |           1 |
+      200054 | transfer   |           1 |
+      200055 | transfer   |           1 |
+      200056 | transfer   |           1 |
+      200057 | transfer   |           1 |
+      200058 | transfer   |           1 |
+      200059 | transfer   |           1 |
+      200060 | transfer   |           1 |
+      200061 | transfer   |           1 |
+      200062 | transfer   |           1 |
+      200063 | transfer   |           1 |
+      200064 | transfer   |           1 |
+      200065 | transfer   |           1 |
+      200066 | transfer   |           1 |
+      200067 | transfer   |           1 |
+      200068 | transfer   |           1 |
+      200069 | transfer   |           1 |
+      200070 | transfer   |           1 |
+      200071 | transfer   |           1 |
+      200072 | transfer   |           1 |
+      200073 | transfer   |           1 |
+      200074 | transfer   |           1 |
+      200075 | transfer   |           1 |
+      200076 | transfer   |           1 |
+      200077 | transfer   |           1 |
+      200078 | transfer   |           1 |
+      200079 | transfer   |           1 |
+      200080 | transfer   |           1 |
+      200081 | transfer   |           1 |
+      200082 | transfer   |           1 |
+      200083 | transfer   |           1 |
+      200084 | transfer   |           1 |
+      200085 | transfer   |           1 |
+      200086 | transfer   |           1 |
+      200087 | transfer   |           1 |
+      200088 | transfer   |           1 |
+      200089 | transfer   |           1 |
+      200090 | transfer   |           1 |
+      200091 | transfer   |           1 |
+      200092 | transfer   |           1 |
+      200093 | transfer   |           1 |
+      200094 | transfer   |           1 |
+      200095 | transfer   |           1 |
+      200096 | transfer   |           1 |
+      200097 | transfer   |           1 |
+      200098 | transfer   |           1 |
+      200099 | transfer   |           1 |
+      200100 | transfer   |           1 |
+      200101 | transfer   |           1 |
+      200102 | transfer   |           1 |
+      200103 | transfer   |           1 |
+      200104 | transfer   |           1 |
+      200105 | transfer   |           1 |
+      200106 | transfer   |           1 |
+      200107 | transfer   |           1 |
+      200108 | transfer   |           1 |
+      200109 | transfer   |           1 |
+      200110 | transfer   |           1 |
+      200111 | transfer   |           1 |
+      200112 | transfer   |           1 |
+      200113 | transfer   |           1 |
+      200114 | transfer   |           1 |
+      200115 | transfer   |           1 |
+      200116 | transfer   |           1 |
+      200117 | transfer   |           1 |
+      200118 | transfer   |           1 |
+      200119 | transfer   |           1 |
+      200120 | transfer   |           1 |
+      200121 | transfer   |           1 |
+      200122 | transfer   |           1 |
+      200123 | transfer   |           1 |
+      200124 | transfer   |           1 |
+      200125 | transfer   |           1 |
+      200126 | transfer   |           1 |
+      200127 | transfer   |           1 |
+      200128 | transfer   |           1 |
+      200129 | transfer   |           1 |
+      200130 | transfer   |           1 |
+      200131 | transfer   |           1 |
+      200132 | transfer   |           1 |
+      200133 | transfer   |           1 |
+      200134 | transfer   |           1 |
+      200135 | transfer   |           1 |
+      200136 | transfer   |           1 |
+      200137 | transfer   |           1 |
+      200138 | transfer   |           1 |
+      200139 | transfer   |           1 |
+      200140 | transfer   |           1 |
+      200141 | transfer   |           1 |
+      200142 | transfer   |           1 |
+      200143 | transfer   |           1 |
+      200144 | transfer   |           1 |
+      200145 | transfer   |           1 |
+      200146 | transfer   |           1 |
+      200147 | transfer   |           1 |
+      200148 | transfer   |           1 |
+      200149 | transfer   |           1 |
+      200150 | transfer   |           1 |
+      200151 | transfer   |           1 |
+      200152 | transfer   |           1 |
+      200153 | transfer   |           1 |
+      200154 | transfer   |           1 |
+      200155 | transfer   |           1 |
+      200156 | transfer   |           1 |
+      200157 | transfer   |           1 |
+      200158 | transfer   |           1 |
+      200159 | transfer   |           1 |
+      200160 | transfer   |           1 |
+      200161 | transfer   |           1 |
+      200162 | transfer   |           1 |
+      200163 | transfer   |           1 |
+      200164 | transfer   |           1 |
+      200165 | transfer   |           1 |
+      200166 | transfer   |           1 |
+      200167 | transfer   |           1 |
+      200168 | transfer   |           1 |
+      200169 | transfer   |           1 |
+      200170 | transfer   |           1 |
+      200171 | transfer   |           1 |
+      200172 | transfer   |           1 |
+      200173 | transfer   |           1 |
+      200174 | transfer   |           1 |
+      200175 | transfer   |           1 |
+      200176 | transfer   |           1 |
+      200177 | transfer   |           1 |
+      200178 | transfer   |           1 |
+      200179 | transfer   |           1 |
+      200180 | transfer   |           1 |
+      200181 | transfer   |           1 |
+      200182 | transfer   |           1 |
+      200183 | transfer   |           1 |
+      200184 | transfer   |           1 |
+      200185 | transfer   |           1 |
+      200186 | transfer   |           1 |
+      200187 | transfer   |           1 |
+      200188 | transfer   |           1 |
+      200189 | transfer   |           1 |
+      200190 | transfer   |           1 |
+      200191 | transfer   |           1 |
+      200192 | transfer   |           1 |
+      200193 | transfer   |           1 |
+      200194 | transfer   |           1 |
+      200195 | transfer   |           1 |
+      200196 | transfer   |           1 |
+      200197 | transfer   |           1 |
+      200198 | transfer   |           1 |
+      200199 | transfer   |           1 |
+      200200 | transfer   |           1 |
+      200201 | transfer   |           1 |
+      200202 | transfer   |           1 |
+      200203 | transfer   |           1 |
+      200204 | transfer   |           1 |
+      200205 | transfer   |           1 |
+      200206 | transfer   |           1 |
+      200207 | transfer   |           1 |
+      200208 | transfer   |           1 |
+      200209 | transfer   |           1 |
+      200210 | transfer   |           1 |
+      200211 | transfer   |           1 |
+      200212 | transfer   |           1 |
+      200213 | transfer   |           1 |
+      200214 | transfer   |           1 |
+      200215 | transfer   |           1 |
+      200216 | transfer   |           1 |
+      200217 | transfer   |           1 |
+      200218 | transfer   |           1 |
+      200219 | transfer   |           1 |
+      200220 | transfer   |           1 |
+      200221 | transfer   |           1 |
+      200222 | transfer   |           1 |
+      200223 | transfer   |           1 |
+      200224 | transfer   |           1 |
+      200225 | transfer   |           1 |
+      200226 | transfer   |           1 |
+      200227 | transfer   |           1 |
+      200228 | transfer   |           1 |
+      200229 | transfer   |           1 |
+      200230 | transfer   |           1 |
+      200231 | transfer   |           1 |
+      200232 | transfer   |           1 |
+      200233 | transfer   |           1 |
+      200234 | transfer   |           1 |
+      200235 | transfer   |           1 |
+      200236 | transfer   |           1 |
+      200237 | transfer   |           1 |
+      200238 | transfer   |           1 |
+      200239 | transfer   |           1 |
+      200240 | transfer   |           1 |
+      200241 | transfer   |           1 |
+      200242 | transfer   |           1 |
+      200243 | transfer   |           1 |
+      200244 | transfer   |           1 |
+      200245 | transfer   |           1 |
+      200246 | transfer   |           1 |
+      200247 | transfer   |           1 |
+      200248 | transfer   |           1 |
+      200249 | transfer   |           1 |
+      200250 | transfer   |           1 |
+      200251 | transfer   |           1 |
+      200252 | transfer   |           1 |
+      200253 | transfer   |           1 |
+      200254 | transfer   |           1 |
+      200255 | transfer   |           1 |
+      200256 | transfer   |           1 |
+      200257 | transfer   |           1 |
+      200258 | transfer   |           1 |
+      200259 | transfer   |           1 |
+      200260 | transfer   |           1 |
+      200261 | transfer   |           1 |
+      200262 | transfer   |           1 |
+      200263 | transfer   |           1 |
+      200264 | transfer   |           1 |
+      200265 | transfer   |           1 |
+      200266 | transfer   |           1 |
+      200267 | transfer   |           1 |
+      200268 | transfer   |           1 |
+      200269 | transfer   |           1 |
+      200270 | transfer   |           1 |
+      200271 | transfer   |           1 |
+      200272 | transfer   |           1 |
+      200273 | transfer   |           1 |
+      200274 | transfer   |           1 |
+      200275 | transfer   |           1 |
+      200276 | transfer   |           1 |
+      200277 | transfer   |           1 |
+      200278 | transfer   |           1 |
+      200279 | transfer   |           1 |
+      200280 | transfer   |           1 |
+      200281 | transfer   |           1 |
+      200282 | transfer   |           1 |
+      200283 | transfer   |           1 |
+      200284 | transfer   |           1 |
+      200285 | transfer   |           1 |
+      200286 | transfer   |           1 |
+      200287 | transfer   |           1 |
+      200288 | transfer   |           1 |
+      200289 | transfer   |           1 |
+      200290 | transfer   |           1 |
+      200291 | transfer   |           1 |
+      200292 | transfer   |           1 |
+      200293 | transfer   |           1 |
+      200294 | transfer   |           1 |
+      200295 | transfer   |           1 |
+      200296 | transfer   |           1 |
+      200297 | transfer   |           1 |
+      200298 | transfer   |           1 |
+      200299 | transfer   |           1 |
+      200300 | transfer   |           1 |
+      200301 | transfer   |           1 |
+      200302 | transfer   |           1 |
+      200303 | transfer   |           1 |
+      200304 | transfer   |           1 |
+      200305 | transfer   |           1 |
+      200306 | transfer   |           1 |
+      200307 | transfer   |           1 |
+      200308 | transfer   |           1 |
+      200309 | transfer   |           1 |
+      200310 | transfer   |           1 |
+      200311 | transfer   |           1 |
+      200312 | transfer   |           1 |
+      200313 | transfer   |           1 |
+      200314 | transfer   |           1 |
+      200315 | transfer   |           1 |
+      200316 | transfer   |           1 |
+      200317 | transfer   |           1 |
+      200318 | transfer   |           1 |
+      200319 | transfer   |           1 |
+      200320 | transfer   |           1 |
+      200321 | transfer   |           1 |
+      200322 | transfer   |           1 |
+      200323 | transfer   |           1 |
+      200324 | transfer   |           1 |
+      200325 | transfer   |           1 |
+      200326 | transfer   |           1 |
+      200327 | transfer   |           1 |
+      200328 | transfer   |           1 |
+      200329 | transfer   |           1 |
+      200330 | transfer   |           1 |
+      200331 | transfer   |           1 |
+      200332 | transfer   |           1 |
+      200333 | transfer   |           1 |
+      200334 | transfer   |           1 |
+      200335 | transfer   |           1 |
+      200336 | transfer   |           1 |
+      200337 | transfer   |           1 |
+(332 rows)

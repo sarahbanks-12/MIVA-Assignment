@@ -1,0 +1,38 @@
+SET
+BEGIN
+SET
+ post_transfer
+---------------
+        200340
+(1 row)
+
+COMMIT
+BEGIN
+SET
+ post_transfer
+---------------
+        200341
+(1 row)
+
+ROLLBACK
+ transfer_id | request_key | source_account | destination_account | amount_kobo | kind | reversal_of | created_at
+-------------+-------------+----------------+---------------------+-------------+------+-------------+------------
+(0 rows)
+
+BEGIN
+SET
+ post_transfer
+---------------
+        200342
+(1 row)
+
+COMMIT
+   request_key   |   kind   | amount_kobo | is_reversal
+-----------------+----------+-------------+-------------
+ manual-transfer | transfer |       10000 | f
+ manual-reversal | reversal |       10000 | t
+(2 rows)
+
+ account_id | balance_kobo | ledger_balance
+------------+--------------+----------------
+(0 rows)

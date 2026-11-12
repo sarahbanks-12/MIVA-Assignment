@@ -1,0 +1,38 @@
+{
+  "topology": "Two PostgreSQL instances on one host; physical streaming replication; asynchronous",
+  "primary_port": 55503,
+  "standby_port": 55504,
+  "standby_in_recovery": true,
+  "marker": "replication-marker-1794479048870759000",
+  "transfer_id": 200339,
+  "amount_kobo": 12345,
+  "primary_wal_lsn": "0/D00DE08",
+  "observed_within_seconds": 0.0265,
+  "standby_marker_postings": [
+    [
+      1,
+      -12345
+    ],
+    [
+      42,
+      12345
+    ]
+  ],
+  "primary_replication_rows": [
+    [
+      "streaming",
+      "async",
+      "0/D00DE08",
+      "0/D00DE08",
+      "0/D00DE08",
+      "0/D00DE08"
+    ]
+  ],
+  "standby_write_rejected": {
+    "sqlstate": "25006",
+    "error": "cannot execute INSERT in a read-only transaction"
+  },
+  "primary_transfer_count": 200333,
+  "standby_transfer_count": 200333,
+  "limitations": "Not cloud deployment, not separate failure domains, no failover or disaster recovery test; measured observation interval is not a general lag guarantee."
+}
