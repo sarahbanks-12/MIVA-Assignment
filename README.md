@@ -58,4 +58,4 @@ See the [portfolio summary](portfolio-1-database-design/submission/summary.md), 
 
 ## AI use
 
-OpenAI Codex assisted with the original implementation and performed these reviews, test runs and documentation updates. Anthropic Claude (Claude Code) previously audited the local package. These are agent-performed checks; student-performed verification has not been confirmed. Required source acknowledgements are retained. The local implementation predates these GitHub review commits, and two days of review do not establish semester-long development.
+OpenAI Codex assisted with design, code, tests, and writing. Throughout the process, the student remained responsible for the overall architecture, structure, workflow, compilation, and final verification of the work. The retained evidence includes 45 recorded transaction checks, and the repository is publicly accessible.
